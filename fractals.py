@@ -1,4 +1,5 @@
 import random
+import math
 
 class Point():
     x : float
@@ -34,9 +35,29 @@ class Generator():
         self.ratio = ratio
 
     def avg(self, p1 : Point, p2 : Point) -> Point:
-        return Point((p1.x + p2.x)/2, (p1.y + p2.y)/2)
+        return Point((p1.x + p2.x) * self.ratio, (p1.y + p2.y) * self.ratio)
     
 
     def generate(self, last : Point) -> Point:
         other : Point = random.choice(self.corners).coords 
         return self.avg(last, other)
+
+# returns the ideal ratio for any N sided polygon
+def ratio(n) -> float:
+    # using the modular arithmetic method
+    if (n % 4 == 0):
+        return 1/(1+math.tan(math.pi/n))
+    elif (n % 4 == 1 or n % 4 == 3):
+        return 1/(1 + 2*math.sin(math.pi/(2*n)))
+    else:
+        return 1/(1 + math.sin(math.pi/n))
+        
+
+# returns the centrepoint (mean) of a collection of points
+def centre(corners : list[Corner]):
+    sumx = 0
+    sumy = 0
+    for i in corners:
+        sumx += i.coords.x
+        sumy += i.coords.y
+    return Point(sumx/len(corners), sumy/len(corners))
