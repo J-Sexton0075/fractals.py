@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-def plot(corners, centre):
+def plot(corners : list[fractals.corners], centre : fractals.Point, iterations : int, plotsize : float) -> None:
     gen = fractals.Generator(corners, fractals.ratio(len(corners)))
 
     points : list [fractals.Point] = []
-    for i in range (0):
+    for i in range (iterations):
         points.append(centre)
         centre = gen.generate(centre)
 
@@ -26,27 +26,14 @@ def plot(corners, centre):
     x = np.array(x)
     y = np.array(y)
 
-    plt.scatter(x, y, s=10)
+    plt.scatter(x, y, s=plotsize)
     plt.show()
 
 
 
-# define a shape
-c1 = fractals.Corner("c1", fractals.Point(0, 0))
-c2 = fractals.Corner("c2", fractals.Point(1, 0))
-c3 = fractals.Corner("c3", fractals.Point(0.5, math.sqrt(3)/2))
-c4 = fractals.Corner("c4", fractals.Point(0,1))
-c5 = fractals.Corner("c5", fractals.Point(1,1))
-
-
-# these points DO NOT make a pentagon btw hence it doesn't work in the slightest
-u1 = fractals.Corner("u1", fractals.Point(1,1))
-u2 = fractals.Corner("u2", fractals.Point(0.3090, 0.9511))
-u3 = fractals.Corner("u3", fractals.Point(-0.8090, 0.5878))
-u4 = fractals.Corner("u4", fractals.Point(-0.8090, -0.5878))
-u5 = fractals.Corner("u5", fractals.Point(0.3090, -0.9511))
-
-# centre doesn't need to be chosen, actually its better if I did this randomly 
-centre = fractals.centre([u1])
-
-plot([u1,u2,u3,u4,u5], centre)
+def takeN(n, iter, size):
+    try:
+        corners = fractals.corners(int(n))
+        plot(corners, corners[0].coords, int(iter), int(size))
+    except TypeError: pass
+    
